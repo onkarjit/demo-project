@@ -1,0 +1,54 @@
+<ng-template appPlaceholder></ng-template>
+<div class="row">
+  <div class="col-12 col-md-6 offset-md-3">
+<!--    <app-alert [message]="error" *ngIf="error" (close)="onHandleError()"></app-alert>-->
+    <div *ngIf="isLoading" style="text-align: center">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+      <div class="form-floating mb-3">
+        <input formControlName="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+        <label for="email">Email address</label>
+        <span *ngIf="authForm.get('email').invalid && authForm.get('email').touched">
+          <span
+            class="text-danger"
+            *ngIf="authForm.get('email').errors['required']">
+            Email is required
+          </span>
+
+          <span
+            class="text-danger"
+            *ngIf="authForm.get('email').errors['email']">
+            Email should be an valid email address
+          </span>
+        </span>
+      </div>
+      <div class="form-floating mb-3">
+        <input formControlName="password" type="password" class="form-control" id="password" placeholder="Password">
+        <label for="password">Password</label>
+        <span *ngIf="authForm.get('password').invalid && authForm.get('password').touched">
+          <span
+            class="text-danger"
+            *ngIf="authForm.get('password').errors['required']">
+            Password is required
+          </span>
+
+          <span
+            class="text-danger"
+            *ngIf="authForm.get('password').errors['minlength']">
+            Password should have a minimum length of 6 characters
+          </span>
+        </span>
+      </div>
+      <div>
+        <button
+          class="btn btn-success me-2"
+          type="submit"
+          [disabled]="authForm.invalid">
+          {{ isLoginMode ? 'Login' : 'Sign Up' }}
+        </button>
+        <button class="btn btn-primary" type="button" (click)="onSwitchMode()">Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-12">
+          <button [disabled]="recipeForm.invalid" type="submit" class="btn btn-success me-2">
+            Save
+          </button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="gy-2">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              formControlName="name">
+            <span
+              class="text-danger"
+              *ngIf="recipeForm.get('name').invalid && recipeForm.get('name').touched">
+              Recipe name is required
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="gy-2">
+            <label for="imageUrl">Image URL</label>
+            <input
+              type="text"
+              id="imageUrl"
+              class="form-control"
+              formControlName="imageUrl"
+              #imgUrl>
+            <span
+              class="text-danger"
+              *ngIf="recipeForm.get('imageUrl').invalid && recipeForm.get('imageUrl').touched">
+              Image URL is required
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+            <img [src]="imgUrl.value"
+                 class="img-fluid">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-12">
+          <div class="gy-2">
+            <label for="description">Description</label>
+            <textarea
+              type="text"
+              id="description"
+              class="form-control" rows="6"
+              formControlName="description"></textarea>
+            <span
+              class="text-danger"
+              *ngIf="recipeForm.get('description').invalid && recipeForm.get('description').touched">
+              Description is required
+            </span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-12" formArrayName="ingredients">
+          <div
+            class="row"
+            *ngFor="let ingredientCtrl of igFormArray.controls; let i = index"
+            [formGroupName]="i">
+            <div class="col-8">
+              <label for="igName">Ingredient Name</label>
+              <input
+                id="igName"
+                type="text"
+                class="form-control"
+                formControlName="name">
+              <span
+                class="text-danger"
+                *ngIf="recipeForm.get('ingredients.' + i + '.name').invalid && recipeForm.get('ingredients.' + i + '.name').touched">
+              Ingredient name is required
+            </span>
+            </div>
+            <div class="col-2">
+              <label for="igAmount">Amount</label>
+              <input
+                id="igAmount"
+                type="number"
+                class="form-control"
+                formControlName="amount">
+              <span
+                class="text-danger"
+                *ngIf="recipeForm.get('ingredients.' + i + '.amount').invalid && recipeForm.get('ingredients.' + i + '.amount').touched">
+                <span *ngIf="recipeForm.get('ingredients.' + i + '.amount').errors['required']">
+                  Please enter an amount
+                </span>
+                <span *ngIf="recipeForm.get('ingredients.' + i + '.amount').errors['pattern']">
+                  Amount needs to be a number between 1-99
+                </span>
+            </span>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-danger mt-4" (click)="onDeleteIngredient(i)">X</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-12">
+              <button
+                type="button"
+                class="btn btn-success"
+                (click)="onAddIngredient()">Add Ingredient</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
